@@ -101,27 +101,71 @@ function Player(gs) {
 
     var handleKeyDown = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP ){
-	    vy = -WALK_VY;
+	    if (vy <= 0) {
+		vy = -WALK_VY;
+	    }
+	    else {
+		vy = 0;
+	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.DOWN) {
-	    vy = WALK_VY;
+	    if (vy >= 0) {
+		vy = WALK_VY;
+	    }
+	    else {
+		vy = 0;
+	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    vx = -WALK_VX;
+	    if (vx <= 0) {
+		vx = -WALK_VX;
+	    }
+	    else {
+		vx = 0;
+	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    vx = WALK_VX;
+	    if (vx >= 0) {
+		vx = WALK_VX;
+	    }
+	    else {
+		vx = 0;
+	    }
 	}
     };
 
     var handleKeyUp = function(code) {
-	if (code === PlayerGlobals.Keycodes.UP ||
-	    code === PlayerGlobals.Keycodes.DOWN){
-	    vy = 0;
+	if (code === PlayerGlobals.Keycodes.UP) {
+	    if (vy < 0) {
+		vy = 0;
+	    }
+	    else {
+		vy = WALK_VY;
+	    }
 	}
-	else if (code === PlayerGlobals.Keycodes.LEFT ||
-		 code === PlayerGlobals.Keycodes.RIGHT) {
-	    vx = 0;
+	else if (code === PlayerGlobals.Keycodes.DOWN){
+	    if (vy > 0) {
+		vy = 0;
+	    }
+	    else {
+		vy = -WALK_VY;
+	    }
+	}
+	else if (code === PlayerGlobals.Keycodes.LEFT) {
+	    if (vx < 0) {
+		vx = 0;
+	    }
+	    else {
+		vx = WALK_VX;
+	    }
+	}
+	else if (code === PlayerGlobals.Keycodes.RIGHT) {
+	    if (vx > 0) {
+		vx = 0;
+	    }
+	    else {
+		vx = -WALK_VX;
+	    }
 	}
     };
 
