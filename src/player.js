@@ -169,7 +169,6 @@ function Player(gs) {
 	}
     };
 
-    console.log("Returning player");
     return {
 	update: update,
 	draw: draw,
