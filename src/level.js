@@ -7,6 +7,13 @@ var createLevel = function(gs) {
 	[gs.width-20, 0, gs.width, gs.height]
     ];
     var firstroom = Room(gs, tiles);
+    var player = null;
+
+    gs.include("src/player.js", function(url) {
+	player = Player(gs);
+	gs.addEntity(player);
+	gs.launch();
+    });
 };
 
 var Room = function(gs, tiles) {
