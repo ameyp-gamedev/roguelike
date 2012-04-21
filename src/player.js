@@ -20,27 +20,24 @@ function Player(gs) {
     };
     var vx = 0,
 	vy = 0;
-    var moveLeft = false,
-	moveRight = false,
-	moveUp = false,
-	moveDown = false;
 
     var r = gs.width * 0.01;
 
     var update = function() {
-	if (vy === 0) {
+	if (vx !== 0 && vy === 0) {
 	    pos.x += vx;
 	}
-	else if (vx === 0) {
-	    pos.y -= vy;
+	else if (vx === 0 && vy !== 0) {
+	    pos.y += vy;
 	}
 	else {
 	    pos.x += vx/PlayerGlobals.Constants.sqrt2;
-	    pos.y -= vy/PlayerGlobals.Constants.sqrt2;
+	    pos.y += vy/PlayerGlobals.Constants.sqrt2;
 	}
     };
 
     var draw = function(c) {
+	// console.log("Drawing at [" + pos.x + "," + pos.y + "]");
 	c.fillRect(pos.x - r/2, pos.y - r/2, r, r);
     };
 
@@ -60,8 +57,8 @@ function Player(gs) {
 	var sides = [
 	    [bb[1] - (ab[1] + ab[3]), 1, 1],
  	    [bb[0] - (ab[0] + ab[2]), 0, 1],
- 	    [ab[0] - (bb[0] + bb[2]), 0, -1],
- 	    [ab[1] - (bb[1] + bb[3]), 1, -1]
+ 	    [ab[0] - (bb[0] + bb[2]), 0, 0],
+ 	    [ab[1] - (bb[1] + bb[3]), 1, 0]
  	];
 	sides.sort(compare);
 	var d = sides[0];
@@ -74,7 +71,12 @@ function Player(gs) {
 		pos.y -= WALK_VY;
 	    }
 	    else {
-		pos.y = bb[1];
+		if (d[2]) {
+		    pos.y -= WALK_VY;
+		}
+		else {
+		    pos.y += WALK_VY;
+		}
 	    }
 	    vy = 0;
 	}
@@ -86,7 +88,12 @@ function Player(gs) {
 		pos.x -= WALK_VX;
 	    }
 	    else {
-		pos.x = bb[0];
+		if (d[2]) {
+		    pos.x += WALK_VX;
+		}
+		else {
+		    pos.x -= WALK_VX;
+		}
 	    }
 	    vx = 0;
 	}
@@ -94,79 +101,27 @@ function Player(gs) {
 
     var handleKeyDown = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP ){
-	    if (moveDown === false) {
-		vy = WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
-	    moveUp = true;
+	    vy = -WALK_VY;
 	}
 	else if (code === PlayerGlobals.Keycodes.DOWN) {
-	    if (moveUp === false) {
-		vy = -WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
-	    moveDown = true;
+	    vy = WALK_VY;
 	}
 	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    if (moveRight === false) {
-		vx = -WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
-	    moveLeft = true;
+	    vx = -WALK_VX;
 	}
 	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    if (moveLeft === false) {
-		vx = WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
-	    moveRight = true;
+	    vx = WALK_VX;
 	}
     };
 
     var handleKeyUp = function(code) {
-	if (code === PlayerGlobals.Keycodes.UP ){
-	    if (moveDown === true) {
-		vy = -WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
-	    moveUp = false;
+	if (code === PlayerGlobals.Keycodes.UP ||
+	    code === PlayerGlobals.Keycodes.DOWN){
+	    vy = 0;
 	}
-	else if (code === PlayerGlobals.Keycodes.DOWN) {
-	    if (moveUp === true) {
-		vy = WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
-	    moveDown = false;
-	}
-	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    if (moveRight === true) {
-		vx = WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
-	    moveLeft = false;
-	}
-	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    if (moveLeft === true) {
-		vx = -WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
-	    moveRight = false;
+	else if (code === PlayerGlobals.Keycodes.LEFT ||
+		 code === PlayerGlobals.Keycodes.RIGHT) {
+	    vx = 0;
 	}
     };
 
