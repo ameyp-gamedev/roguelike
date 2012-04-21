@@ -44,6 +44,10 @@ function Player(gs) {
 	c.fillRect(pos.x - r/2, pos.y - r/2, r, r);
     };
 
+    var collisionBox = function() {
+	return [pos.x - r/2, pos.y - r/2, r, r];
+    };
+
     var handleKeyDown = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP ){
 	    if (moveDown === false) {
@@ -126,6 +130,7 @@ function Player(gs) {
 	update: update,
 	draw: draw,
 	keyDown: handleKeyDown,
-	keyUp: handleKeyUp
+	keyUp: handleKeyUp,
+	get_collision_aabb: collisionBox
     };
 }
