@@ -89,10 +89,10 @@ function Player(gs) {
 	    }
 	    else {
 		if (d[2]) {
-		    pos.x += WALK_VX;
+		    pos.x -= WALK_VX;
 		}
 		else {
-		    pos.x -= WALK_VX;
+		    pos.x += WALK_VX;
 		}
 	    }
 	    vx = 0;
@@ -125,6 +125,7 @@ function Player(gs) {
 	}
     };
 
+    console.log("Returning player");
     return {
 	update: update,
 	draw: draw,
