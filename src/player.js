@@ -44,7 +44,7 @@ function Player(gs) {
 	c.fillRect(pos.x - r/2, pos.y - r/2, r, r);
     };
 
-    var collisionBox = function() {
+    var get_collision_aabb = function() {
 	return [pos.x - r/2, pos.y - r/2, r, r];
     };
 
@@ -131,6 +131,6 @@ function Player(gs) {
 	draw: draw,
 	keyDown: handleKeyDown,
 	keyUp: handleKeyUp,
-	get_collision_aabb: collisionBox
+	get_collision_aabb: get_collision_aabb
     };
 }
