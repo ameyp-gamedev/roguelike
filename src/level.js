@@ -9,10 +9,18 @@ var createLevel = function(gs) {
     var firstroom = Room(gs, tiles);
     var player = null;
 
+    var update = function() {
+	collide.aabb([player], firstroom.getBlocks());
+    };
+
     gs.include("src/player.js", function(url) {
 	player = Player(gs);
 	gs.addEntity(player);
 	gs.launch();
+    });
+
+    gs.addEntity({
+	update: update
     });
 };
 

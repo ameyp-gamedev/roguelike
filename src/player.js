@@ -48,6 +48,50 @@ function Player(gs) {
 	return [pos.x - r/2, pos.y - r/2, r, r];
     };
 
+    var collide_aabb = function(who) {
+	var ab = get_collision_aabb();
+	var bb = who.get_collision_aabb();
+
+	var compare = function(x, y) {
+	    return x[0] < y[0] ? 1
+		: x[0] > y[0] ? -1 : 0;
+	};
+
+	var sides = [
+	    [bb[1] - (ab[1] + ab[3]), 1, 1],
+ 	    [bb[0] - (ab[0] + ab[2]), 0, 1],
+ 	    [ab[0] - (bb[0] + bb[2]), 0, -1],
+ 	    [ab[1] - (bb[1] + bb[3]), 1, -1]
+ 	];
+	sides.sort(compare);
+	var d = sides[0];
+
+	if (d[1]) {
+	    if (pos.y > bb[1] + bb[3]) {
+		pos.y += WALK_VY;
+	    }
+	    else if (pos.y < bb[1]) {
+		pos.y -= WALK_VY;
+	    }
+	    else {
+		pos.y = bb[1];
+	    }
+	    vy = 0;
+	}
+	else {
+	    if (pos.x > bb[0] + bb[2]) {
+		pos.x += WALK_VX;
+	    }
+	    else if (pos.x < bb[0]) {
+		pos.x -= WALK_VX;
+	    }
+	    else {
+		pos.x = bb[0];
+	    }
+	    vx = 0;
+	}
+    };
+
     var handleKeyDown = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP ){
 	    if (moveDown === false) {
@@ -131,6 +175,7 @@ function Player(gs) {
 	draw: draw,
 	keyDown: handleKeyDown,
 	keyUp: handleKeyUp,
-	get_collision_aabb: get_collision_aabb
+	get_collision_aabb: get_collision_aabb,
+	collide_aabb: collide_aabb
     };
 }
