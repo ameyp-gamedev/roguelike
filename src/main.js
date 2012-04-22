@@ -25,7 +25,7 @@ function startGame() {
 		name: "level1:room2",
 		portals: [
 		    {
-			from: "level1:room1",
+			to: "level1:room1",
 			at: [0, gs.height/2-20, 0, gs.height/2+20]
 		    }
 		],

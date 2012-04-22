@@ -44,6 +44,7 @@ var createLevel = function(gs, spec) {
 	    spawnPoint = newRoom.findSpawnPoint(gs, player, currentRoom);
 	    player.setPos(spawnPoint[0], spawnPoint[1]);
 	    currentRoom = newRoom;
+	    // console.log("Loaded room: " + JSON.stringify(currentRoom));
 	}
     };
 
@@ -100,10 +101,9 @@ var Room = function(gs, roomData) {
     var i = 0;
     var temp_block;
 
-    var tiles = roomData.tiles;
 
-    for (i = 0; i < tiles.length; i += 1) {
-	temp_block = Block(tiles[i]);
+    for (i = 0; i < roomData.tiles.length; i += 1) {
+	temp_block = Block(roomData.tiles[i]);
 	blocks.push(temp_block);
     }
 

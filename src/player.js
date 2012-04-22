@@ -39,7 +39,7 @@ function Player(gs) {
 	    pos[0] += vx/PlayerGlobals.Constants.sqrt2;
 	    pos[1] += vy/PlayerGlobals.Constants.sqrt2;
 	}
-	console.log("Player position = [" + pos[0] + "," + pos[1] + "]");
+	// console.log("Player position = [" + pos[0] + "," + pos[1] + "]");
     };
 
     var draw = function(c) {
