@@ -11,13 +11,13 @@ function startGame() {
 			to: "level1:room2",
 			at: [gs.width, gs.height/3-20],
 			type: "vertical",
-			width: 20
+			width: 40
 		    },
 		    {
 			to: "level1:room3",
 			at: [0, gs.height/1.5-20],
 			type: "vertical",
-			width: 20
+			width: 40
 		    }
 		],
 		levelStart: true,
@@ -37,7 +37,7 @@ function startGame() {
 			to: "level1:room1",
 			at: [0, gs.height/1.5-20],
 			type: "vertical",
-			width: 20
+			width: 40
 		    }
 		],
 		levelStart: false,
@@ -56,7 +56,7 @@ function startGame() {
 			to: "level1:room1",
 			at: [gs.width, gs.height/2-20],
 			type: "vertical",
-			width: 20
+			width: 40
 		    }
 		],
 		levelStart: false,
