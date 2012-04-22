@@ -13,17 +13,17 @@ function startGame() {
 		    },
 		    {
 			to: "level1:room3",
-			at: [gs.width, gs.height/1.5-20, gs.width, gs.height/1.5+20]
+			at: [0, gs.height/1.5-20, 0, gs.height/1.5+20]
 		    }
 		],
 		levelStart: true,
 		tiles: [
 		    [0, 0, gs.width, 20],
-		    [0, 0, 20, gs.height],
+		    [0, 0, 20, gs.height/1.5-20],
+		    [0, gs.height/1.5+20, 20, gs.height/3],
 		    [0, gs.height-20, gs.width, gs.height],
 		    [gs.width-20, 0, gs.width, gs.height/3-20],
-		    [gs.width-20, gs.height/3+20, gs.width, gs.height/3-40],
-		    [gs.width-20, gs.height/1.5+20, gs.width, gs.height]
+		    [gs.width-20, gs.height/3+20, gs.width, gs.height]
 		]
 	    },
 	    {
@@ -48,16 +48,16 @@ function startGame() {
 		portals: [
 		    {
 			to: "level1:room1",
-			at: [0, gs.height/2-20, 0, gs.height/2+20]
+			at: [gs.width, gs.height/2-20, gs.width, gs.height/2+20]
 		    }
 		],
 		levelStart: false,
 		tiles: [
 		    [0, 0, gs.width, 20],
-		    [0, 0, 20, gs.height/2-20],
-		    [0, gs.height/2+20, 20, gs.height],
+		    [0, 0, 20, gs.height],
 		    [0, gs.height-20, gs.width, gs.height],
-		    [gs.width-20, 0, gs.width, gs.height]
+		    [gs.width-20, 0, gs.width, gs.height/2-20],
+		    [gs.width-20, gs.height/2+20, gs.width, gs.height]
 		]
 	    }
 	]
