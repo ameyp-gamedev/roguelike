@@ -26,7 +26,7 @@ function Player(gs) {
 	moveLeft = false,
 	moveRight = false;
 
-    var r = gs.width * 0.01;
+    var r = 25;
 
     var update = function() {
 	if (vx !== 0 && vy === 0) {
