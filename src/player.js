@@ -39,11 +39,17 @@ function Player(gs) {
 	    pos[0] += vx/PlayerGlobals.Constants.sqrt2;
 	    pos[1] += vy/PlayerGlobals.Constants.sqrt2;
 	}
+	console.log("Player position = [" + pos[0] + "," + pos[1] + "]");
     };
 
     var draw = function(c) {
 	// console.log("Drawing at [" + pos[0] + "," + pos[1] + "]");
 	c.fillRect(pos[0] - r/2, pos[1] - r/2, r, r);
+    };
+
+    var setPos = function(x, y) {
+	pos[0] = x;
+	pos[1] = y;
     };
 
     var get_collision_aabb = function() {
@@ -188,6 +194,10 @@ function Player(gs) {
 	keyDown: handleKeyDown,
 	keyUp: handleKeyUp,
 	get_collision_aabb: get_collision_aabb,
-	collide_aabb: collide_aabb
+	collide_aabb: collide_aabb,
+	pos: pos,
+	setPos: setPos,
+	WALK_VX: WALK_VX,
+	WALK_VY: WALK_VY
     };
 }

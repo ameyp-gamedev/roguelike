@@ -26,7 +26,25 @@ var createLevel = function(gs, spec) {
     gs.launch();
 
     var update = function() {
+	var newRoom,
+            exitPortal,
+            spawnPoint;
+
 	collide.aabb([player], currentRoom.getBlocks());
+
+	if (player.pos[0] < 0 ||
+	    player.pos[0] > gs.width ||
+	    player.pos[1] < 0 ||
+	    player.pos[1] > gs.height) {
+
+	    exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
+	    newRoom = findRoomFromPortal(rooms, currentRoom.getName(), exitPortal);
+
+	    activateRoom(gs, currentRoom, newRoom);
+	    spawnPoint = newRoom.findSpawnPoint(gs, player, currentRoom);
+	    player.setPos(spawnPoint[0], spawnPoint[1]);
+	    currentRoom = newRoom;
+	}
     };
 
     gs.addEntity({
@@ -40,11 +58,24 @@ var createRooms = function(gs, blueprint) {
 	rooms = [];
 
     for (i = 0; i < blueprint.length; i += 1) {
-	room = Room(blueprint[i]);
+	room = Room(gs, blueprint[i]);
 	rooms.push(room);
     }
 
     return rooms;
+};
+
+// works only for axis-aligned portals
+var findRoomFromPortal = function(rooms, roomName, portal) {
+    var i, j, destinationPortal;
+
+    for (i = 0; i < rooms.length; i += 1) {
+	if (rooms[i].getName() === portal.to) {
+	    return rooms[i];
+	}
+    }
+
+    throw "Unable to find room named " + portal.to;
 };
 
 var activateRoom = function(gs, currentRoom, newRoom) {
@@ -64,7 +95,7 @@ var activateRoom = function(gs, currentRoom, newRoom) {
     }
 };
 
-var Room = function(roomData) {
+var Room = function(gs, roomData) {
     var blocks = [];
     var i = 0;
     var temp_block;
@@ -76,6 +107,81 @@ var Room = function(roomData) {
 	blocks.push(temp_block);
     }
 
+    var findPortalFromPos = function(x, y) {
+	var i, portal;
+
+	for (i = 0; i < roomData.portals.length; i += 1) {
+	    portal = roomData.portals[i];
+	    if (portal.at[0] !== portal.at[2]) {
+		if (x > portal.at[0] && x < portal.at[2]) {
+		    // pass1
+		    if ((portal.at[1] === 0 && y <= portal.at[1]) ||
+			(portal.at[1] === gs.height && y >= portal.at[1])) {
+			return portal;
+		    }
+		}
+	    }
+	    else if (portal.at[1] !== portal.at[3]) {
+		if (y > portal.at[1] && y < portal.at[3]) {
+		    // pass1
+		    if ((portal.at[0] === 0 && x <= portal.at[0]) ||
+			(portal.at[0] === gs.width && x >= portal.at[0])) {
+			return portal;
+		    }
+		}
+	    }
+	}
+	throw "unable to find portal for [" + x + "," + y + "] in room " + roomData.name;
+    };
+
+    var findLinkedPortal = function(roomName, portal) {
+	var i, myPortal;
+
+	if (roomData.name !== portal.to) {
+	    return null;
+	}
+
+	for (i = 0; i < roomData.portals.length; i += 1) {
+	    myPortal = roomData.portals[i];
+
+	    if (myPortal.to === roomName) {
+		break;
+	    }
+	}
+
+	return myPortal;
+    };
+
+    var findSpawnPoint = function(gs, player, currentRoom) {
+	var i;
+	var spawn = [];
+	// var entryPortal = findPortalFromPos(player.pos[0], player.pos[1]);
+	var exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
+
+	var entryPortal = findLinkedPortal(currentRoom.getName(), exitPortal);
+
+	if (entryPortal.at[0] === entryPortal.at[2]) {
+	    if (entryPortal.at[0] === 0) {
+		spawn = [player.WALK_VX, player.pos[1]];
+	    }
+	    else if (entryPortal.at[0] === gs.width) {
+		spawn = [gs.width - player.WALK_VX, player.pos[1]];
+	    }
+	}
+	else if (entryPortal.at[1] === entryPortal.at[3]) {
+	    if (entryPortal.at[1] === 0) {
+		spawn = [player.pos[0], player.WALK_VY];
+	    }
+	    else if (entryPortal.at[1] === gs.height) {
+		spawn = [player.pos[0], gs.height - player.WALK_VY];
+	    }
+	}
+
+	console.log("Spawn point found to be [" + spawn[0] + "," + spawn[1] + "]");
+	return spawn;
+    };
+
+
     return {
 	getBlocks: function() {
 	    return blocks;
@@ -85,7 +191,10 @@ var Room = function(roomData) {
 	},
 	isLevelStart: function() {
 	    return roomData.levelStart;
-	}
+	},
+	findPortalFromPos: findPortalFromPos,
+	findLinkedPortal: findLinkedPortal,
+	findSpawnPoint: findSpawnPoint
     };
 };
 

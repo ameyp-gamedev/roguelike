@@ -6,8 +6,7 @@ function startGame() {
 	rooms: [
 	    {
 		name: "level1:room1",
-		entries: [],
-		exits: [
+		portals: [
 		    {
 			to: "level1:room2",
 			at: [gs.width, gs.height/2-20, gs.width, gs.height/2+20]
@@ -24,13 +23,12 @@ function startGame() {
 	    },
 	    {
 		name: "level1:room2",
-		entries: [
+		portals: [
 		    {
 			from: "level1:room1",
 			at: [0, gs.height/2-20, 0, gs.height/2+20]
 		    }
 		],
-		exits: [],
 		levelStart: false,
 		tiles: [
 		    [0, 0, gs.width, 20],
