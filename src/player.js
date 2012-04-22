@@ -14,10 +14,10 @@ function Player(gs) {
     var WALK_VX = 10;
     var WALK_VY = 10;
 
-    var pos = {
-	x: gs.width * 0.5,
-	y: gs.height * 0.5
-    };
+    var pos = [
+	gs.width * 0.5,
+	gs.height * 0.5
+    ];
     var vx = 0,
 	vy = 0;
 
@@ -25,24 +25,24 @@ function Player(gs) {
 
     var update = function() {
 	if (vx !== 0 && vy === 0) {
-	    pos.x += vx;
+	    pos[0] += vx;
 	}
 	else if (vx === 0 && vy !== 0) {
-	    pos.y += vy;
+	    pos[1] += vy;
 	}
 	else {
-	    pos.x += vx/PlayerGlobals.Constants.sqrt2;
-	    pos.y += vy/PlayerGlobals.Constants.sqrt2;
+	    pos[0] += vx/PlayerGlobals.Constants.sqrt2;
+	    pos[1] += vy/PlayerGlobals.Constants.sqrt2;
 	}
     };
 
     var draw = function(c) {
-	// console.log("Drawing at [" + pos.x + "," + pos.y + "]");
-	c.fillRect(pos.x - r/2, pos.y - r/2, r, r);
+	// console.log("Drawing at [" + pos[0] + "," + pos[1] + "]");
+	c.fillRect(pos[0] - r/2, pos[1] - r/2, r, r);
     };
 
     var get_collision_aabb = function() {
-	return [pos.x - r/2, pos.y - r/2, r, r];
+	return [pos[0] - r/2, pos[1] - r/2, r, r];
     };
 
     var collide_aabb = function(who) {
@@ -64,35 +64,35 @@ function Player(gs) {
 	var d = sides[0];
 
 	if (d[1]) {
-	    if (pos.y > bb[1] + bb[3]) {
-		pos.y += WALK_VY;
+	    if (pos[1] > bb[1] + bb[3]) {
+		pos[1] += WALK_VY;
 	    }
-	    else if (pos.y < bb[1]) {
-		pos.y -= WALK_VY;
+	    else if (pos[1] < bb[1]) {
+		pos[1] -= WALK_VY;
 	    }
 	    else {
 		if (d[2]) {
-		    pos.y -= WALK_VY;
+		    pos[1] -= WALK_VY;
 		}
 		else {
-		    pos.y += WALK_VY;
+		    pos[1] += WALK_VY;
 		}
 	    }
 	    vy = 0;
 	}
 	else {
-	    if (pos.x > bb[0] + bb[2]) {
-		pos.x += WALK_VX;
+	    if (pos[0] > bb[0] + bb[2]) {
+		pos[0] += WALK_VX;
 	    }
-	    else if (pos.x < bb[0]) {
-		pos.x -= WALK_VX;
+	    else if (pos[0] < bb[0]) {
+		pos[0] -= WALK_VX;
 	    }
 	    else {
 		if (d[2]) {
-		    pos.x -= WALK_VX;
+		    pos[0] -= WALK_VX;
 		}
 		else {
-		    pos.x += WALK_VX;
+		    pos[0] += WALK_VX;
 		}
 	    }
 	    vx = 0;
