@@ -155,25 +155,34 @@ var Room = function(gs, roomData) {
     var findSpawnPoint = function(gs, player, currentRoom) {
 	var i;
 	var spawn = [];
-	// var entryPortal = findPortalFromPos(player.pos[0], player.pos[1]);
-	var exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
 
+	var offsetInPortal, entryPortalWidth, exitPortalWidth;
+
+	var exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
 	var entryPortal = findLinkedPortal(currentRoom.getName(), exitPortal);
 
 	if (entryPortal.at[0] === entryPortal.at[2]) {
+	    entryPortalWidth = exitPortal.at[3] - exitPortal.at[1];
+	    exitPortalWidth = entryPortal.at[3] - entryPortal.at[1];
+	    offsetInPortal = (player.pos[1] - exitPortal.at[1]) / entryPortalWidth;
+
 	    if (entryPortal.at[0] === 0) {
-		spawn = [player.WALK_VX, player.pos[1]];
+		spawn = [player.WALK_VX, entryPortal.at[1] + offsetInPortal * exitPortalWidth];
 	    }
 	    else if (entryPortal.at[0] === gs.width) {
-		spawn = [gs.width - player.WALK_VX, player.pos[1]];
+		spawn = [gs.width - player.WALK_VX, entryPortal.at[1] + offsetInPortal * exitPortalWidth];
 	    }
 	}
 	else if (entryPortal.at[1] === entryPortal.at[3]) {
+	    entryPortalWidth = exitPortal.at[2] - exitPortal.at[0];
+	    exitPortalWidth = entryPortal.at[2] - entryPortal.at[0];
+	    offsetInPortal = (player.pos[0] - exitPortal.at[0]) / entryPortalWidth;
+
 	    if (entryPortal.at[1] === 0) {
-		spawn = [player.pos[0], player.WALK_VY];
+		spawn = [entryPortal.at[0] + offsetInPortal * exitPortalWidth, player.WALK_VY];
 	    }
 	    else if (entryPortal.at[1] === gs.height) {
-		spawn = [player.pos[0], gs.height - player.WALK_VY];
+		spawn = [entryPortal.at[0] + offsetInPortal * exitPortalWidth, gs.height - player.WALK_VY];
 	    }
 	}
 
