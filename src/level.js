@@ -112,8 +112,8 @@ var Room = function(gs, roomData) {
 
 	for (i = 0; i < roomData.portals.length; i += 1) {
 	    portal = roomData.portals[i];
-	    if (portal.at[0] !== portal.at[2]) {
-		if (x > portal.at[0] && x < portal.at[2]) {
+	    if (portal.type === "horizontal") {
+		if (x > portal.at[0] && x < portal.at[0] + portal.width) {
 		    // pass1
 		    if ((portal.at[1] === 0 && y <= portal.at[1]) ||
 			(portal.at[1] === gs.height && y >= portal.at[1])) {
@@ -121,8 +121,8 @@ var Room = function(gs, roomData) {
 		    }
 		}
 	    }
-	    else if (portal.at[1] !== portal.at[3]) {
-		if (y > portal.at[1] && y < portal.at[3]) {
+	    else if (portal.type === "vertical") {
+		if (y > portal.at[1] && y < portal.at[1] + portal.width) {
 		    // pass1
 		    if ((portal.at[0] === 0 && x <= portal.at[0]) ||
 			(portal.at[0] === gs.width && x >= portal.at[0])) {
@@ -156,33 +156,29 @@ var Room = function(gs, roomData) {
 	var i;
 	var spawn = [];
 
-	var offsetInPortal, entryPortalWidth, exitPortalWidth;
+	var offsetInPortal;
 
 	var exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
 	var entryPortal = findLinkedPortal(currentRoom.getName(), exitPortal);
 
-	if (entryPortal.at[0] === entryPortal.at[2]) {
-	    entryPortalWidth = exitPortal.at[3] - exitPortal.at[1];
-	    exitPortalWidth = entryPortal.at[3] - entryPortal.at[1];
-	    offsetInPortal = (player.pos[1] - exitPortal.at[1]) / entryPortalWidth;
+	if (entryPortal.type === "vertical") {
+	    offsetInPortal = player.pos[1] - exitPortal.at[1];
 
 	    if (entryPortal.at[0] === 0) {
-		spawn = [player.WALK_VX, entryPortal.at[1] + offsetInPortal * exitPortalWidth];
+		spawn = [player.WALK_VX, entryPortal.at[1] + offsetInPortal];
 	    }
 	    else if (entryPortal.at[0] === gs.width) {
-		spawn = [gs.width - player.WALK_VX, entryPortal.at[1] + offsetInPortal * exitPortalWidth];
+		spawn = [gs.width - player.WALK_VX, entryPortal.at[1] + offsetInPortal];
 	    }
 	}
-	else if (entryPortal.at[1] === entryPortal.at[3]) {
-	    entryPortalWidth = exitPortal.at[2] - exitPortal.at[0];
-	    exitPortalWidth = entryPortal.at[2] - entryPortal.at[0];
-	    offsetInPortal = (player.pos[0] - exitPortal.at[0]) / entryPortalWidth;
+	else if (entryPortal.type === "horizontal") {
+	    offsetInPortal = player.pos[0] - exitPortal.at[0];
 
 	    if (entryPortal.at[1] === 0) {
-		spawn = [entryPortal.at[0] + offsetInPortal * exitPortalWidth, player.WALK_VY];
+		spawn = [entryPortal.at[0] + offsetInPortal, player.WALK_VY];
 	    }
 	    else if (entryPortal.at[1] === gs.height) {
-		spawn = [entryPortal.at[0] + offsetInPortal * exitPortalWidth, gs.height - player.WALK_VY];
+		spawn = [entryPortal.at[0] + offsetInPortal, gs.height - player.WALK_VY];
 	    }
 	}
 

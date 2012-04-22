@@ -9,11 +9,15 @@ function startGame() {
 		portals: [
 		    {
 			to: "level1:room2",
-			at: [gs.width, gs.height/3-20, gs.width, gs.height/3+20]
+			at: [gs.width, gs.height/3-20],
+			type: "vertical",
+			width: 20
 		    },
 		    {
 			to: "level1:room3",
-			at: [0, gs.height/1.5-20, 0, gs.height/1.5+20]
+			at: [0, gs.height/1.5-20],
+			type: "vertical",
+			width: 20
 		    }
 		],
 		levelStart: true,
@@ -31,7 +35,9 @@ function startGame() {
 		portals: [
 		    {
 			to: "level1:room1",
-			at: [0, gs.height/1.5-20, 0, gs.height/1.5+20]
+			at: [0, gs.height/1.5-20],
+			type: "vertical",
+			width: 20
 		    }
 		],
 		levelStart: false,
@@ -48,7 +54,9 @@ function startGame() {
 		portals: [
 		    {
 			to: "level1:room1",
-			at: [gs.width, gs.height/2-20, gs.width, gs.height/2+20]
+			at: [gs.width, gs.height/2-20],
+			type: "vertical",
+			width: 20
 		    }
 		],
 		levelStart: false,
