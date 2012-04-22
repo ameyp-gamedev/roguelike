@@ -1,11 +1,11 @@
 html, body {
-    margin: 20px;
-    padding: 20px;
+    margin: 5px;
+    padding: 5px;
     overflow: hidden;
 }
 div {
-    width: 80%;
-    height: 80%;
+    width: 700px;
+    height: 700px;
     position: absolute;
     border: 1px solid;
 }

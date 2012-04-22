@@ -1,41 +1,90 @@
 // temporary, need to change this to an object too (probably)
-var createLevel = function(gs) {
-    var tiles = [
-	[0, 0, gs.width, 20],
-	[0, 0, 20, gs.height],
-	[0, gs.height-20, gs.width, gs.height],
-	[gs.width-20, 0, gs.width, gs.height]
-    ];
-    var firstroom = Room(gs, tiles);
+var createLevel = function(gs, spec) {
+    var name = spec.name;
+    var currentRoom = null;
     var player = null;
 
-    var update = function() {
-	collide.aabb([player], firstroom.getBlocks());
-    };
+    var i;
+
+    var rooms = createRooms(gs, spec.rooms);
+
+    for (i = 0; i < rooms.length; i += 1) {
+	if (rooms[i].isLevelStart()) {
+	    currentRoom = rooms[i];
+	    break;
+	}
+    }
+
+    if (currentRoom === null) {
+	throw "Unable to find level start";
+    }
+
+    activateRoom(gs, null, currentRoom);
 
     player = Player(gs);
     gs.addEntity(player);
     gs.launch();
+
+    var update = function() {
+	collide.aabb([player], currentRoom.getBlocks());
+    };
 
     gs.addEntity({
 	update: update
     });
 };
 
-var Room = function(gs, tiles) {
+var createRooms = function(gs, blueprint) {
+    var i;
+    var room,
+	rooms = [];
+
+    for (i = 0; i < blueprint.length; i += 1) {
+	room = Room(blueprint[i]);
+	rooms.push(room);
+    }
+
+    return rooms;
+};
+
+var activateRoom = function(gs, currentRoom, newRoom) {
+    var blocks = [];
+    var i;
+
+    if (currentRoom !== null) {
+	blocks = currentRoom.getBlocks();
+	for (i = 0; i < blocks.length; i += 1) {
+	    gs.delEntity(blocks[i]);
+	}
+    }
+
+    blocks = newRoom.getBlocks();
+    for (i = 0; i < blocks.length; i += 1) {
+	gs.addEntity(blocks[i]);
+    }
+};
+
+var Room = function(roomData) {
     var blocks = [];
     var i = 0;
     var temp_block;
 
+    var tiles = roomData.tiles;
+
     for (i = 0; i < tiles.length; i += 1) {
 	temp_block = Block(tiles[i]);
 	blocks.push(temp_block);
-	gs.addEntity(temp_block);
     }
 
     return {
 	getBlocks: function() {
 	    return blocks;
+	},
+	getName: function() {
+	    return roomData.name;
+	},
+	isLevelStart: function() {
+	    return roomData.levelStart;
 	}
     };
 };
