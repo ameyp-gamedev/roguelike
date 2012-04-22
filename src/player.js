@@ -21,6 +21,11 @@ function Player(gs) {
     var vx = 0,
 	vy = 0;
 
+    var moveUp = false,
+	moveDown = false,
+	moveLeft = false,
+	moveRight = false;
+
     var r = gs.width * 0.01;
 
     var update = function() {
@@ -101,7 +106,8 @@ function Player(gs) {
 
     var handleKeyDown = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP ){
-	    if (vy <= 0) {
+	    moveUp = true;
+	    if (moveDown === false) {
 		vy = -WALK_VY;
 	    }
 	    else {
@@ -109,7 +115,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.DOWN) {
-	    if (vy >= 0) {
+	    moveDown = true;
+	    if (moveUp === false) {
 		vy = WALK_VY;
 	    }
 	    else {
@@ -117,7 +124,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    if (vx <= 0) {
+	    moveLeft = true;
+	    if (moveRight === false) {
 		vx = -WALK_VX;
 	    }
 	    else {
@@ -125,7 +133,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    if (vx >= 0) {
+	    moveRight = true;
+	    if (moveLeft === false) {
 		vx = WALK_VX;
 	    }
 	    else {
@@ -136,7 +145,8 @@ function Player(gs) {
 
     var handleKeyUp = function(code) {
 	if (code === PlayerGlobals.Keycodes.UP) {
-	    if (vy < 0) {
+	    moveUp = false;
+	    if (moveDown === false) {
 		vy = 0;
 	    }
 	    else {
@@ -144,7 +154,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.DOWN){
-	    if (vy > 0) {
+	    moveDown = false;
+	    if (moveUp === false) {
 		vy = 0;
 	    }
 	    else {
@@ -152,7 +163,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    if (vx < 0) {
+	    moveLeft = false;
+	    if (moveRight === false) {
 		vx = 0;
 	    }
 	    else {
@@ -160,7 +172,8 @@ function Player(gs) {
 	    }
 	}
 	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    if (vx > 0) {
+	    moveRight = false;
+	    if (moveLeft === false) {
 		vx = 0;
 	    }
 	    else {
