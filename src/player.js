@@ -3,7 +3,11 @@ var PlayerGlobals = {
 	UP: 38,
 	DOWN: 40,
 	RIGHT: 39,
-	LEFT: 37
+	LEFT: 37,
+	W: 188,
+	S: 79,
+	A: 65,
+	D: 69
     },
     Constants: {
 	sqrt2: 1.414
@@ -13,6 +17,7 @@ var PlayerGlobals = {
 function Player(gs) {
     var WALK_VX = 10;
     var WALK_VY = 10;
+    var ATTACK_FRAMES = 1;
 
     var pos = [
 	gs.width * 0.5,
@@ -26,9 +31,73 @@ function Player(gs) {
 	moveLeft = false,
 	moveRight = false;
 
+    var attackTop = false,
+	attackBottom = false,
+	attackLeft = false,
+	attackRight = false;
+
     var r = 25;
 
+    var p = new Sprite(["center", "center"],
+		       {
+			   stand: [["img/player_idle.png", 0]],
+			   attack_top: [["img/player_idle.png", 1],
+					["img/player_att_top_1.png", ATTACK_FRAMES],
+					["img/player_att_top_2.png", ATTACK_FRAMES],
+					["img/player_att_top_3.png", ATTACK_FRAMES],
+					["img/player_att_top_4.png", ATTACK_FRAMES],
+					["img/player_att_top_5.png", ATTACK_FRAMES]],
+			   attack_right: [["img/player_idle.png", 1],
+					  ["img/player_att_right_1.png", ATTACK_FRAMES],
+					  ["img/player_att_right_2.png", ATTACK_FRAMES],
+					  ["img/player_att_right_3.png", ATTACK_FRAMES],
+					  ["img/player_att_right_4.png", ATTACK_FRAMES],
+					  ["img/player_att_right_5.png", ATTACK_FRAMES]],
+			   attack_bottom: [["img/player_idle.png", 1],
+					   ["img/player_att_bottom_1.png", ATTACK_FRAMES],
+					   ["img/player_att_bottom_2.png", ATTACK_FRAMES],
+					   ["img/player_att_bottom_3.png", ATTACK_FRAMES],
+					   ["img/player_att_bottom_4.png", ATTACK_FRAMES],
+					   ["img/player_att_bottom_5.png", ATTACK_FRAMES]],
+			   attack_left: [["img/player_idle.png", 1],
+					 ["img/player_att_left_1.png", ATTACK_FRAMES],
+					 ["img/player_att_left_2.png", ATTACK_FRAMES],
+					 ["img/player_att_left_3.png", ATTACK_FRAMES],
+					 ["img/player_att_left_4.png", ATTACK_FRAMES],
+					 ["img/player_att_left_5.png", ATTACK_FRAMES]]
+		       },
+		       function() {
+			   p.action("stand");
+		       }
+		      );
+
+    var updateAnimation = function() {
+	if (attackTop) {
+	    p.action("attack_top", false, function(action) {
+		attackTop = false;
+	    });
+	}
+	else if (attackBottom) {
+	    p.action("attack_bottom", false, function(action) {
+		attackBottom = false;
+	    });
+	}
+	else if (attackLeft) {
+	    p.action("attack_left", false, function(action) {
+		attackLeft = false;
+	    });
+	}
+	else if (attackRight) {
+	    p.action("attack_right", false, function(action) {
+		attackRight = false;
+	    });
+	}
+	else {
+	    p.action("stand");
+	}
+    };
     var update = function() {
+	updateAnimation();
 	if (vx !== 0 && vy === 0) {
 	    pos[0] += vx;
 	}
@@ -39,12 +108,14 @@ function Player(gs) {
 	    pos[0] += vx/PlayerGlobals.Constants.sqrt2;
 	    pos[1] += vy/PlayerGlobals.Constants.sqrt2;
 	}
+	p.update();
 	// console.log("Player position = [" + pos[0] + "," + pos[1] + "]");
     };
 
     var draw = function(c) {
 	// console.log("Drawing at [" + pos[0] + "," + pos[1] + "]");
-	c.fillRect(pos[0] - r/2, pos[1] - r/2, r, r);
+	p.draw(c, pos);
+	//c.fillRect(pos[0] - r/2, pos[1] - r/2, r, r);
     };
 
     var setPos = function(x, y) {
@@ -147,6 +218,21 @@ function Player(gs) {
 		vx = 0;
 	    }
 	}
+	else if (code === PlayerGlobals.Keycodes.W) {
+	    attackTop = !attackBottom && !attackLeft && !attackRight;
+	}
+	else if (code === PlayerGlobals.Keycodes.S) {
+	    attackBottom = !attackTop && !attackLeft && !attackRight;
+	}
+	else if (code === PlayerGlobals.Keycodes.A) {
+	    attackLeft = !attackTop && !attackBottom && !attackRight;
+	}
+	else if (code === PlayerGlobals.Keycodes.D) {
+	    attackRight = !attackTop && !attackLeft && !attackBottom;
+	}
+	// else {
+	//     console.log("Code = " + code);
+	// }
     };
 
     var handleKeyUp = function(code) {

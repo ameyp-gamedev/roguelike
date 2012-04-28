@@ -1,9 +1,9 @@
 html, body {
     margin: 5px;
     padding: 5px;
-    overflow: hidden;
+    //overflow: hidden;
 }
-div {
+#surface {
     width: 700px;
     height: 700px;
     position: absolute;

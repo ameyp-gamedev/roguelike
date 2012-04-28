@@ -1,4 +1,4 @@
-function startGame() {
+var startGame = function () {
     var gs = new JSGameSoup("surface", 30);
 
     var levelData = {
@@ -70,5 +70,33 @@ function startGame() {
 	    }
 	]
     };
+
+    loadSprites();
     createLevel(gs, levelData);
-}
+};
+
+var loadSprites = function() {
+    Sprite.preload([
+	"img/player_idle.png",
+	"img/player_att_top_1.png",
+	"img/player_att_top_2.png",
+	"img/player_att_top_3.png",
+	"img/player_att_top_4.png",
+	"img/player_att_top_5.png",
+	"img/player_att_right_1.png",
+	"img/player_att_right_2.png",
+	"img/player_att_right_3.png",
+	"img/player_att_right_4.png",
+	"img/player_att_right_5.png",
+	"img/player_att_bottom_1.png",
+	"img/player_att_bottom_2.png",
+	"img/player_att_bottom_3.png",
+	"img/player_att_bottom_4.png",
+	"img/player_att_bottom_5.png",
+	"img/player_att_left_1.png",
+	"img/player_att_left_2.png",
+	"img/player_att_left_3.png",
+	"img/player_att_left_4.png",
+	"img/player_att_left_5.png"
+    ]);
+};
