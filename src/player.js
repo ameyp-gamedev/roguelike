@@ -181,106 +181,123 @@ function Player(gs) {
 	}
     };
 
-    var handleKeyDown = function(code) {
-	if (code === PlayerGlobals.Keycodes.UP ){
-	    moveUp = true;
-	    if (moveDown === false) {
-		vy = -WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
+    // Up pressed
+    var keyDown_38 = function() {
+	moveUp = true;
+	if (moveDown === false) {
+	    vy = -WALK_VY;
 	}
-	else if (code === PlayerGlobals.Keycodes.DOWN) {
-	    moveDown = true;
-	    if (moveUp === false) {
-		vy = WALK_VY;
-	    }
-	    else {
-		vy = 0;
-	    }
+	else {
+	    vy = 0;
 	}
-	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    moveLeft = true;
-	    if (moveRight === false) {
-		vx = -WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
+    };
+    // Down pressed
+    var keyDown_40 = function() {
+	moveDown = true;
+	if (moveUp === false) {
+	    vy = WALK_VY;
 	}
-	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    moveRight = true;
-	    if (moveLeft === false) {
-		vx = WALK_VX;
-	    }
-	    else {
-		vx = 0;
-	    }
+	else {
+	    vy = 0;
 	}
-	else if (code === PlayerGlobals.Keycodes.W) {
-	    attackTop = !attackBottom && !attackLeft && !attackRight;
+    };
+    // Left pressed
+    var keyDown_37 = function() {
+	moveLeft = true;
+	if (moveRight === false) {
+	    vx = -WALK_VX;
 	}
-	else if (code === PlayerGlobals.Keycodes.S) {
-	    attackBottom = !attackTop && !attackLeft && !attackRight;
+	else {
+	    vx = 0;
 	}
-	else if (code === PlayerGlobals.Keycodes.A) {
-	    attackLeft = !attackTop && !attackBottom && !attackRight;
+    };
+    // Right pressed
+    var keyDown_39 = function() {
+	moveRight = true;
+	if (moveLeft === false) {
+	    vx = WALK_VX;
 	}
-	else if (code === PlayerGlobals.Keycodes.D) {
-	    attackRight = !attackTop && !attackLeft && !attackBottom;
+	else {
+	    vx = 0;
 	}
-	// else {
-	//     console.log("Code = " + code);
-	// }
+    };
+    // Up released
+    var keyUp_38 = function() {
+	moveUp = false;
+	if (moveDown === false) {
+	    vy = 0;
+	}
+	else {
+	    vy = WALK_VY;
+	}
+    };
+    // Down released
+    var keyUp_40 = function() {
+	moveDown = false;
+	if (moveUp === false) {
+	    vy = 0;
+	}
+	else {
+	    vy = -WALK_VY;
+	}
+    };
+    // Left released
+    var keyUp_37 = function() {
+	moveLeft = false;
+	if (moveRight === false) {
+	    vx = 0;
+	}
+	else {
+	    vx = WALK_VX;
+	}
+    };
+    // Right released
+    var keyUp_39 = function() {
+	moveRight = false;
+	if (moveLeft === false) {
+	    vx = 0;
+	}
+	else {
+	    vx = -WALK_VX;
+	}
     };
 
-    var handleKeyUp = function(code) {
-	if (code === PlayerGlobals.Keycodes.UP) {
-	    moveUp = false;
-	    if (moveDown === false) {
-		vy = 0;
-	    }
-	    else {
-		vy = WALK_VY;
-	    }
-	}
-	else if (code === PlayerGlobals.Keycodes.DOWN){
-	    moveDown = false;
-	    if (moveUp === false) {
-		vy = 0;
-	    }
-	    else {
-		vy = -WALK_VY;
-	    }
-	}
-	else if (code === PlayerGlobals.Keycodes.LEFT) {
-	    moveLeft = false;
-	    if (moveRight === false) {
-		vx = 0;
-	    }
-	    else {
-		vx = WALK_VX;
-	    }
-	}
-	else if (code === PlayerGlobals.Keycodes.RIGHT) {
-	    moveRight = false;
-	    if (moveLeft === false) {
-		vx = 0;
-	    }
-	    else {
-		vx = -WALK_VX;
-	    }
-	}
+    // W pressed
+    var keyDown_188 = function() {
+	attackTop = !attackBottom && !attackLeft && !attackRight;
+    };
+    // S pressed
+    var keyDown_79 = function() {
+	attackBottom = !attackTop && !attackLeft && !attackRight;
+    };
+    // A pressed
+    var keyDown_65 = function() {
+	attackLeft = !attackTop && !attackBottom && !attackRight;
+    };
+    // D pressed
+    var keyDown_69 = function() {
+	attackRight = !attackTop && !attackLeft && !attackBottom;
     };
 
     return {
 	update: update,
 	draw: draw,
-	keyDown: handleKeyDown,
-	keyUp: handleKeyUp,
+
+	// input handlers
+	keyDown_37: keyDown_37,
+	keyUp_37: keyUp_37,
+	keyDown_38: keyDown_38,
+	keyUp_38: keyUp_38,
+	keyDown_39: keyDown_39,
+	keyUp_39: keyUp_39,
+	keyDown_40: keyDown_40,
+	keyUp_40: keyUp_40,
+
+	// collision
 	get_collision_aabb: get_collision_aabb,
 	collide_aabb: collide_aabb,
+	
+	// location
 	pos: pos,
 	setPos: setPos,
 	WALK_VX: WALK_VX,
