@@ -293,10 +293,15 @@ function Player(gs) {
 	keyDown_40: keyDown_40,
 	keyUp_40: keyUp_40,
 
+	keyDown_188: keyDown_188,
+	keyDown_79: keyDown_79,
+	keyDown_65: keyDown_65,
+	keyDown_69: keyDown_69,
+
 	// collision
 	get_collision_aabb: get_collision_aabb,
 	collide_aabb: collide_aabb,
-	
+
 	// location
 	pos: pos,
 	setPos: setPos,
