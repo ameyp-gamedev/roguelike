@@ -1,11 +1,12 @@
-var Trigger = function(gs, params) {
-    var pos = [
-	params.position[0],
-	params.position[1]
-    ];
+var Trigger = function(params) {
+    var pos = params.pos;
+    var targets = params.targets;
 
-    var p = params.sprite;
-    var r = params.width;
+    var p = new Sprite(params.sprite.anchor,
+		       params.sprite.frames,
+		       function() {
+			   p.action(params.sprite.default);
+		       });
     var active = false;
 
     var get_collision_aabb = function() {
@@ -45,6 +46,12 @@ var Trigger = function(gs, params) {
     };
 
     return {
+	get_name: function() {
+	    return params.name;
+	},
+	get_type: function() {
+	    return params.type;
+	},
 	draw: draw,
 
 	// collision related

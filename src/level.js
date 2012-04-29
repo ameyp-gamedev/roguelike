@@ -19,7 +19,7 @@ var createLevel = function(gs, spec) {
 	throw "Unable to find level start";
     }
 
-    activateRoom(gs, null, currentRoom);
+    currentRoom.activate(gs, null);
 
     player = Player(gs);
     gs.addEntity(player);
@@ -31,6 +31,8 @@ var createLevel = function(gs, spec) {
             spawnPoint;
 
 	collide.aabb([player], currentRoom.getBlocks());
+	collide.aabb([player], currentRoom.getTriggers());
+	collide.aabb([player], currentRoom.getTargets());
 
 	if (player.pos[0] < 0 ||
 	    player.pos[0] > gs.width ||
@@ -40,7 +42,7 @@ var createLevel = function(gs, spec) {
 	    exitPortal = currentRoom.findPortalFromPos(player.pos[0], player.pos[1]);
 	    newRoom = findRoomFromPortal(rooms, currentRoom.getName(), exitPortal);
 
-	    activateRoom(gs, currentRoom, newRoom);
+	    newRoom.activate(gs, currentRoom);
 	    spawnPoint = newRoom.findSpawnPoint(gs, player, currentRoom);
 	    player.setPos(spawnPoint[0], spawnPoint[1]);
 	    currentRoom = newRoom;
@@ -77,21 +79,4 @@ var findRoomFromPortal = function(rooms, roomName, portal) {
     }
 
     throw "Unable to find room named " + portal.to;
-};
-
-var activateRoom = function(gs, currentRoom, newRoom) {
-    var blocks = [];
-    var i;
-
-    if (currentRoom !== null) {
-	blocks = currentRoom.getBlocks();
-	for (i = 0; i < blocks.length; i += 1) {
-	    gs.delEntity(blocks[i]);
-	}
-    }
-
-    blocks = newRoom.getBlocks();
-    for (i = 0; i < blocks.length; i += 1) {
-	gs.addEntity(blocks[i]);
-    }
 };

@@ -6,21 +6,23 @@ var startGame = function () {
 	rooms: [
 	    {
 		name: "level1:room1",
+		levelStart: false,
 		portals: [
 		    {
 			to: "level1:room2",
 			at: [gs.width, gs.height/3-20],
-			type: "vertical",
+			alignment: "vertical",
 			width: 40
 		    },
 		    {
 			to: "level1:room3",
 			at: [0, gs.height/1.5-20],
-			type: "vertical",
+			alignment: "vertical",
 			width: 40
 		    }
 		],
-		levelStart: false,
+		triggers: [],
+		targets: [],
 		tiles: [
 		    [0, 0, gs.width, 20],
 		    [0, 0, 20, gs.height/1.5-20],
@@ -32,15 +34,17 @@ var startGame = function () {
 	    },
 	    {
 		name: "level1:room2",
+		levelStart: false,
 		portals: [
 		    {
 			to: "level1:room1",
 			at: [0, gs.height/1.5-20],
-			type: "vertical",
+			alignment: "vertical",
 			width: 40
 		    }
 		],
-		levelStart: false,
+		triggers: [],
+		targets: [],
 		tiles: [
 		    [0, 0, gs.width, 20],
 		    [0, 0, 20, gs.height/1.5-20],
@@ -51,15 +55,63 @@ var startGame = function () {
 	    },
 	    {
 		name: "level1:room3",
+		levelStart: true,
 		portals: [
 		    {
 			to: "level1:room1",
 			at: [gs.width, gs.height/2-20],
-			type: "vertical",
+			alignment: "vertical",
 			width: 40
 		    }
 		],
-		levelStart: true,
+		targets: [
+		    {
+			name: "level1:room1:entity1",
+			type: "door",
+			open: true,
+			closedPos: [gs.width-40, gs.height/2],
+			openPos: [gs.width-40, gs.height/2+60],
+			sprite: {
+			    anchor: ["center", "center"],
+			    frames: {
+				inactive: [["img/door_vertical.png", 0]]
+			    },
+			    default: "inactive"
+			},
+			scripts: [
+			    {
+				toggle: function() {
+				    if (open) {
+					pos = openPos;
+					open = false;
+				    }
+				    else {
+					pos = closedPos;
+					open = true;
+				    }
+				}
+			    }
+			]
+		    }
+		],
+		triggers: [
+		    {
+			name: "level1:room1:trigger1",
+			pos: [gs.width-60, gs.height/3],
+			type: "console",
+			sprite: {
+			    anchor: ["center", "center"],
+			    frames: {
+				active: [["img/plate_active.png", 0]],
+				inactive: [["img/plate_inactive.png", 0]]
+			    },
+			    default: "inactive"
+			},
+			shoots: [
+			    "level1:room1:entity1"
+			]
+		    }
+		],
 		tiles: [
 		    [0, 0, gs.width, 20],
 		    [0, 0, 20, gs.height],

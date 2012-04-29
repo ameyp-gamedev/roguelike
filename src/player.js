@@ -285,6 +285,7 @@ function Player(gs) {
     return {
 	update: update,
 	draw: draw,
+	priority: 1,
 
 	// input handlers
 	keyDown_37: keyDown_37,
