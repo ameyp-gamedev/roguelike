@@ -18,6 +18,7 @@ var Block = function(tile) {
 
     return {
 	draw: draw,
-	get_collision_aabb: get_collision_aabb
+	get_collision_aabb: get_collision_aabb,
+	opague: true
     };
 };
