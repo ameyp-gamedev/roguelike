@@ -15,11 +15,14 @@ var Trigger = function(gs, params) {
     var collide_aabb = function(who) {
 	if (who.hasOwnProperty('is_player') &&
 	    who.is_player === true) {
+
 	    active = true;
 	    p.action("active");
 
-	    if (params.activeCallback) {
-		params.activeCallback();
+	    if (params.activeCallbacks) {
+		for (var i = 0; i < params.activeCallbacks.length; i += 1) {
+		    params.activeCallbacks[i]();
+		}
 	    };
 	}
     };
@@ -29,8 +32,10 @@ var Trigger = function(gs, params) {
 	    active = false;
 	    p.action("inactive");
 
-	    if (params.inactiveCallback) {
-		params.inactiveCallback();
+	    if (params.inactiveCallbacks) {
+		for (var i = 0; i < params.activeCallbacks.length; i += 1) {
+		    params.inactiveCallbacks[i]();
+		}
 	    }
 	}
     };
