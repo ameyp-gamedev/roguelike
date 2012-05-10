@@ -123,8 +123,17 @@ var startGame = function () {
 	]
     };
 
-    loadSprites();
-    createLevel(gs, levelData);
+    $.ajax({
+	type: "GET",
+	url: "levels/level1.tmx",
+	dataType: "xml",
+	success: function(xml) {
+	    Tiled.getLevelData(xml);
+	}
+    });
+
+    // loadSprites();
+    // createLevel(gs, levelData);
 };
 
 var loadSprites = function() {
